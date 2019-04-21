@@ -5,6 +5,7 @@ fun main() {
     nullableInitialization()
     simpleNullableInitialization()
     valueChanged()
+    intBindables()
 }
 
 fun initialization() {
@@ -47,7 +48,15 @@ fun valueChanged() {
 }
 
 fun intBindables() {
-    val bindable1 = BindableInt(1)
-    val bindable2 = BindableInt()
+    val bindable1 = BindableInt(1)             //No need for specifying the class
+    val bindable2 = BindableInt()              //Default value is 0
     bindable2.bindTo(bindable1)
+
+    bindable1.disabled = true
+
+    try {
+        bindable2.value = 3                    //Results in an UnsupportedOperationException
+    } catch (e: UnsupportedOperationException) {
+        println("Working as intended")
+    }
 }

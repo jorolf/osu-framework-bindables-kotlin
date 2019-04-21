@@ -7,7 +7,11 @@ import java.lang.ref.WeakReference
 import java.lang.reflect.Constructor
 
 open class Bindable<T>(initialValue: T, internal val clazz: Class<T>) {
+
+    @get:JvmName("getValueChangedEvent")
     val valueChanged: Event<ValueChangedEvent<T>> = Event()
+
+    @get:JvmName("getDisabledChangedEvent")
     val disabledChanged: Event<Boolean> = Event()
 
     private var internalValue: T = initialValue

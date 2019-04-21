@@ -1,6 +1,6 @@
 ## osu.Framework.Bindables in Kotlin
 
-This is a translation of the bindables from the [osu-framework](https://github.com/ppy/osu-framework) for kotlin.  
+This is a translation of the [osu-framework](https://github.com/ppy/osu-framework) bindables for kotlin.  
 
 Join our [discord server](https://discord.gg/mvwxGPR) if you have questions related to this translation
  or the osu-framework in general.  
@@ -14,14 +14,14 @@ Every method and every property is now lowercase (e.g. ``Value`` -> ``value``, `
 
 There is a special ``Event<T>`` class that represents c# events which kotlin does not have.
 
-There are no interfaces. Interfaces like ``IBindable`` or ``IParseable`` have been removed.
-If you need them create a issue and state your use case.
+Interfaces like ``IBindable`` or ``IParseable`` have been removed.
+If you need them create a issue and describe why you do.
 
 ``LockedWeakList<T>`` is now ``SynchronizedWeakList<T>``.  
 
 ``BindableList<T>`` is now ``BindableMutableList<T>``.
 
-``Cached<T>`` has been renamed to ``TypedCached<T>`` because of limitations of the JVM. ``Cached`` stays the same.  
+``Cached<T>`` has been renamed to ``TypedCached<T>`` because of the JVM's limitations. ``Cached`` stays the same.  
 
 ``internal`` packages should be treated as *internal*. Their purpose is to circumvent certain limitations of kotlin.
 
@@ -30,16 +30,16 @@ If you need them create a issue and state your use case.
 The constructor signature of a ``Bindable<T>`` is ``Bindable<T>(initialValue: T, clazz: Class<T>)``.
 The first value is the initial value this ``Bindable<T>`` has
 and the second value is the class that this ``Bindable<T>`` saves.
-The reason for that is that the generic type can't be queried at runtime because of the generic type erasure of the JVM.
+The reason for that is that the generic type can't be queried at runtime due to the generic type erasure of the JVM.
 
-A special inline method was added to assist this problem: ``Bindable.new<T>(value: T)``.
+A special inline method was added to assist this problem: ``Bindable.new<T>(value: T)``. (see examples)
 
 There are also special versions of this method for nullable bindables. Their ``default`` value is initialized to ``null``.
 
-The ``parse(input: Any)`` has also changed a bit. It does not allow null values to be passed
-and it allows custom ``String`` parsers now.
+The ``parse(input: Any)`` has also changed a bit. It forbids null values to be passed
+and allows custom ``String`` parsers.
 Whenever a ``String`` is passed to this method it tries to find a static ``valueOf(str: String)`` method on the generic
-type.
+type. (i.e. ``T.valueOf(str: String)``)
 Classes like ``Boolean`` or ``Long`` have these already implemented.
 (Note: When using primitive types like ``Int`` or ``Long`` then the constructor expects the object types)
 
@@ -58,7 +58,7 @@ The ``getBoundCopy()`` methods of ``BindableNumber<T>`` have been renamed to ``g
 overshadow their "original" method.
 
 ``isInteger`` checks the precision instead of the class now. This change was made to allow for custom number classes.
-(Like ``BigDecimal``)
+(e.g. ``BigDecimal``)
 
 The default values of bindable numbers are ``0``
 
@@ -71,4 +71,4 @@ It also required functions for converting a number into ``T`` and adding ``T``.
 
 The ``itemAdded`` and ``itemRemoved`` events fire for each item and not for the whole "batch".
 
-``BindableMutableList<T>`` is fully compatible with ``java.util.List<T>`` or ``kotlin.collections.MutableList<T>``.
+``BindableMutableList<T>``s are fully compatible with ``java.util.List<T>`` or ``kotlin.collections.MutableList<T>``.

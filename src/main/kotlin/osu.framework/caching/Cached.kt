@@ -5,24 +5,22 @@ import osu.framework.caching.internal.CachingHelper
 class TypedCached<T> {
     var value: T = CachingHelper.returnItself<T>(null)
         get() {
-            if (!privateIsValid)
+            if (!isValid)
                 throw IllegalStateException("May not query ${::value.name} of an invalid ${TypedCached::class.simpleName}")
 
             return field
         }
         set(value) {
             field = value
-            privateIsValid = true
+            isValid = true
         }
 
-    private var privateIsValid: Boolean = false
-
-    val isValid: Boolean
-        get() = privateIsValid
+    var isValid: Boolean = false
+        private set
 
     fun invalidate(): Boolean {
-        if (privateIsValid) {
-            privateIsValid = false
+        if (isValid) {
+            isValid = false
             return true
         }
 
@@ -31,14 +29,12 @@ class TypedCached<T> {
 }
 
 class Cached {
-    private var privateIsValid: Boolean = false
-
-    val isValid: Boolean
-        get() = privateIsValid
+    var isValid: Boolean = false
+        private set
 
     fun invalidate(): Boolean {
-        if (privateIsValid) {
-            privateIsValid = false
+        if (isValid) {
+            isValid = false
             return true
         }
 
@@ -46,6 +42,6 @@ class Cached {
     }
 
     fun validate() {
-        privateIsValid = true
+        isValid = true
     }
 }
